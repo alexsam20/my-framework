@@ -18,11 +18,26 @@ class Router
 
     public function get($path, $callback = null): void
     {
-        $this->routes['GET'][$path] = $callback;
+        $path = trim($path, "/");
+        $this->routes['GET']["/$path"] = $callback;
     }
 
     public function post($path, $callback = null): void
     {
         $this->routes['POST'][$path] = $callback;
+    }
+
+    public function dispatch(): mixed
+    {
+        $path = $this->request->getPath();
+        $method = $this->request->getMethod();
+        $callback = $this->routes[$method]["/$path"] ?? false;
+
+        if (false === $callback) {
+            $this->response->setResponseCode(404);
+            return 'Page not found';
+        }
+
+        return call_user_func($callback);
     }
 }
