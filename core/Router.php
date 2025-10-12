@@ -38,6 +38,14 @@ class Router
             return 'Page not found';
         }
 
+        if (is_array($callback)) {
+            /*$class = new $callback[0]();
+            $action = $callback[1];
+
+            return $class->$action();*/
+            $callback[0] = new $callback[0]();
+        }
+
         return call_user_func($callback);
     }
 }

@@ -10,10 +10,6 @@ $app->router->get('/about', function () {
     return 'About Page';
 });
 
-$app->router->get('/contact', function () {
-    return 'Contact form GET Page';
-});
+$app->router->get('/contact', [\app\Controllers\ContactController::class, 'index']);
 
-$app->router->post('/contact', function () {
-    return 'Contact form POST Page';
-});
+$app->router->post('/contact', [\app\Controllers\ContactController::class, 'send']);
