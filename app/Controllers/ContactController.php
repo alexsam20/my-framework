@@ -23,7 +23,8 @@ class ContactController extends Controller
 
     public function send()
     {
-        var_dump($_POST);
+        print_pre(request()->getData());
+        print_pre(request()->post('email'));
         return 'Contact form POST Page';
     }
 }

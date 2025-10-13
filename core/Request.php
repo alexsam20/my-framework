@@ -21,6 +21,26 @@ class Request
         return strtoupper($_SERVER['REQUEST_METHOD']);
     }
 
+    public function isGet(): bool
+    {
+        return $this->getMethod() === 'GET';
+    }
+
+    public function isPost(): bool
+    {
+        return $this->getMethod() === 'POST';
+    }
+
+    public function get(string $key, $default = null): ?string
+    {
+        return $_GET[$key] ?? $default;
+    }
+
+    public function post(string $key, $default = null): ?string
+    {
+        return $_POST[$key] ?? $default;
+    }
+
     public function removeQueryString(): string
     {
         if ($this->uri) {
@@ -33,8 +53,14 @@ class Request
         return '';
     }
 
-    public function get(string $key, $default = null): ?string
+    public function getData(): array
     {
-        return $_GET[$key] ?? $default;
+        $data = [];
+        $requestData = $this->isGet() ? $_GET : $_POST;
+        foreach ($requestData as $key => $value) {
+            $data[$key] = trim($value);
+        }
+
+        return $data;
     }
 }
