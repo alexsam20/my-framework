@@ -7,7 +7,7 @@ use core\Controller;
 
 class ContactController extends Controller
 {
-    public function index()
+    public function index(): false|string|\core\View
     {
         $title = 'Contact Title Page';
         $name = 'John Kerry';
@@ -23,6 +23,7 @@ class ContactController extends Controller
 
     public function send()
     {
+        var_dump($_POST);
         return 'Contact form POST Page';
     }
 }

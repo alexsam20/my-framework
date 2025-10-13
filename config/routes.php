@@ -3,7 +3,7 @@
 /** @var \core\Application $app */
 
 $app->router->get('/', function () {
-    return view('main');
+    return view('main', ['title' => 'Home Page'], 'default');
 });
 
 $app->router->get('/about', function () {

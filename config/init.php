@@ -12,5 +12,3 @@ const HELPERS = ROOT . DS .'helpers';
 const CONFIG = ROOT . DS .'config';
 const VIEWS = APP . DS . 'Views';
 const LAYOUT = 'default';
-
-//require_once ROOT . '/vendor/autoload.php';
