@@ -46,6 +46,18 @@ abstract class Model
     protected function check(array $field): void
     {
         foreach ($field['rules'] as $rule => $rule_value) {
+            if (in_array($rule, $this->rules_list, true)
+                && !$this->$rule($field['value'], $rule_value)) {
+                $this->addError(
+                    $field['field_name'],
+                    str_replace(
+                        [':field_name:', ':rule_value:'],
+                        [$field['field_name'], $rule_value],
+                        $this->messages[$rule]
+                    )
+                );                }
+        }
+        /*foreach ($field['rules'] as $rule => $rule_value) {
             if (in_array($rule, $this->rules_list, true)) {
                 if (!call_user_func_array([$this, $rule], [$field['value'], $rule_value])) {
                     $this->addError(
@@ -57,7 +69,7 @@ abstract class Model
                         )
                     );                }
             }
-        }
+        }*/
     }
 
     protected function addError($field_name, $error): void
