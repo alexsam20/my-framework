@@ -6,7 +6,12 @@ use core\Model;
 
 class Contact extends Model
 {
-    public array $fillable = ['email', 'text', 'name'];
+    public array $fillable = ['name', 'user_name', 'email', 'content',];
     public array $attributes = [];
+    public array $rules = [
+        'name' => ['required' => true],
+        'email' => ['email' => true, 'min' => 5, 'max' => 30],
+        'content' => ['min' => 20],
+    ];
 
 }

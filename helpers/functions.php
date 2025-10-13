@@ -26,7 +26,43 @@ function request(): \core\Request
     return app()->request;
 }
 
-function baseUrl(string $path = ''): string
+function response(): \core\Response
+{
+    return app()->response;
+}
+
+function base_url(string $path = ''): string
 {
     return URL_ROOT . $path;
+}
+
+function hsc($str): string
+{
+    return htmlspecialchars($str, ENT_QUOTES);
+}
+
+function old($field_name): string
+{
+    return isset($_POST[$field_name]) ? hsc($_POST[$field_name]) : '';
+}
+
+function get_errors($field_name, $errors = []): string
+{
+    $output = '';
+    if (isset($errors[$field_name])) {
+        $output .= '<div class="invalid-feedback d-block"><ul class="list-unstyled">';
+        foreach ($errors[$field_name] as $error) {
+            $output .= "<li>{$error}</li>";
+        }
+        $output .= '</ul></div>';
+    }
+    return $output;
+}
+
+function get_validation_class($field_name, $errors = []): string
+{
+    if (empty($errors)) {
+        return '';
+    }
+    return isset($errors[$field_name]) ? 'is-invalid' : 'is-valid';
 }

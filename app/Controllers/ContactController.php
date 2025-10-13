@@ -26,9 +26,12 @@ class ContactController extends Controller
     public function send()
     {
         $model = new Contact();
-        print_pre($model);
         $model->loadData();
-        print_pre($model);
+        if (!$model->validate()) {
+            return view('contact', ['title' => 'Contact Form', 'errors' => $model->getErrors()]);
+        }
+        response()->redirect('/');
+
         return 'Contact form POST Page';
     }
 }
