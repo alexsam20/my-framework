@@ -2,6 +2,7 @@
 
 namespace app\Controllers;
 
+use app\Models\Contact;
 use core\Application;
 use core\Controller;
 
@@ -12,19 +13,22 @@ class ContactController extends Controller
         $title = 'Contact Title Page';
         $name = 'John Kerry';
         return view('contact', compact('title','name'));
-        /*return view('contact', ['title' => 'Contact Title Page', 'name' => 'John Kerry']);*/
         /*
           It's works
-        return view()->render('contact');
-        return $this->render('contact');
-        return app()->view->render('contact');
+          return view('contact', ['title' => 'Contact Title Page', 'name' => 'John Kerry']);
+          It's works to
+          return view()->render('contact');
+          return $this->render('contact');
+          return app()->view->render('contact');
         */
     }
 
     public function send()
     {
-        print_pre(request()->getData());
-        print_pre(request()->post('email'));
+        $model = new Contact();
+        print_pre($model);
+        $model->loadData();
+        print_pre($model);
         return 'Contact form POST Page';
     }
 }
