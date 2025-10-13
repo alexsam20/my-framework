@@ -3,11 +3,11 @@
 /** @var \core\Application $app */
 
 $app->router->get('/', function () {
-    return 'Main Page';
+    return view('main');
 });
 
 $app->router->get('/about', function () {
-    return 'About Page';
+    return view('about');
 });
 
 $app->router->get('/contact', [\app\Controllers\ContactController::class, 'index']);

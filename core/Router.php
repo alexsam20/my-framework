@@ -4,8 +4,6 @@ namespace core;
 
 class Router
 {
-    /*public Request $request;
-    public Response $response;*/
     protected array $routes = [];
 
     public function __construct(public Request $request, public Response $response)
@@ -35,13 +33,12 @@ class Router
 
         if (false === $callback) {
             $this->response->setResponseCode(404);
-            return 'Page not found';
+            return view('errors/404');
         }
 
         if (is_array($callback)) {
             /*$class = new $callback[0]();
             $action = $callback[1];
-
             return $class->$action();*/
             $callback[0] = new $callback[0]();
         }

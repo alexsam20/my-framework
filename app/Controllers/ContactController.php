@@ -2,11 +2,23 @@
 
 namespace app\Controllers;
 
-class ContactController
+use core\Application;
+use core\Controller;
+
+class ContactController extends Controller
 {
     public function index()
     {
-        return 'Contact form GET Page';
+        $title = 'Contact Title Page';
+        $name = 'John Kerry';
+        return view('contact', compact('title','name'));
+        /*return view('contact', ['title' => 'Contact Title Page', 'name' => 'John Kerry']);*/
+        /*
+          It's works
+        return view()->render('contact');
+        return $this->render('contact');
+        return app()->view->render('contact');
+        */
     }
 
     public function send()
