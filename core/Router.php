@@ -32,14 +32,10 @@ class Router
         $callback = $this->routes[$method]["/$path"] ?? false;
 
         if (false === $callback) {
-            $this->response->setResponseCode(404);
-            return view('errors/404');
+            abort();
         }
 
         if (is_array($callback)) {
-            /*$class = new $callback[0]();
-            $action = $callback[1];
-            return $class->$action();*/
             $callback[0] = new $callback[0]();
         }
 

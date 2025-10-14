@@ -14,9 +14,9 @@ class ContactController extends Controller
         $name = 'John Kerry';
         return view('contact', compact('title','name'));
         /*
-          It's works
+          - It's works
           return view('contact', ['title' => 'Contact Title Page', 'name' => 'John Kerry']);
-          It's works to
+          - It's works to
           return view()->render('contact');
           return $this->render('contact');
           return app()->view->render('contact');

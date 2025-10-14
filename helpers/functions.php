@@ -66,3 +66,11 @@ function get_validation_class($field_name, $errors = []): string
     }
     return isset($errors[$field_name]) ? 'is-invalid' : 'is-valid';
 }
+
+function abort(string $error = '', int $code = 404)
+{
+    response()->setResponseCode($code);
+    echo view("errors" . DS . $code, ['error' => $error], false);
+//    echo view("errors/{$code}", ['error' => $error], false);
+    die;
+}

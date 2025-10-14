@@ -7,13 +7,14 @@ abstract class Model
     public array $fillable = [];
     public array $attributes = [];
     public array $rules = [];
+    public array $labels = [];
     protected array $errors = [];
     protected array $rules_list = ['required', 'min', 'max', 'email'];
     protected array $messages = [
-        'required' => 'The :field_name: field is required',
-        'min' => 'The :field_name: field must be a minimum :rule_value: characters',
-        'max' => 'The :field_name: field must be a maximum :rule_value: characters',
-        'email' => 'Not valid email',
+        'required' => ':field_name: field is required',
+        'min' => ':field_name: field must be a minimum :rule_value: characters',
+        'max' => ':field_name: field must be a maximum :rule_value: characters',
+        'email' => 'Not valid :field_name:',
     ];
 
     public function loadData(): void
@@ -52,7 +53,7 @@ abstract class Model
                     $field['field_name'],
                     str_replace(
                         [':field_name:', ':rule_value:'],
-                        [$field['field_name'], $rule_value],
+                        [$this->labels[$field['field_name']] ?? $field['field_name'], $rule_value],
                         $this->messages[$rule]
                     )
                 );                }
