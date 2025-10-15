@@ -3,10 +3,8 @@
 namespace app\Controllers;
 
 use app\Models\Contact;
-use core\Application;
-use core\Controller;
 
-class ContactController extends Controller
+class ContactController extends BaseController
 {
     public function index(): false|string|\core\View
     {

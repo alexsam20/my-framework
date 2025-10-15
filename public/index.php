@@ -8,13 +8,11 @@ if (PHP_MAJOR_VERSION < 8) {
 
 require_once dirname(__DIR__) . '/config/init.php';
 require_once dirname(__DIR__) . '/config/bootstrap.php';
+require_once HELPERS . DS . 'functions.php';
 
 
 $app = new \core\Application();
 require_once CONFIG . DS . 'routes.php';
-require_once HELPERS . DS . 'functions.php';
-//var_dump($app->router->getRoutes());
-//var_dump(app()); exit();
 
 $app->run();
 

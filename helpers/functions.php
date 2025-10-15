@@ -1,5 +1,7 @@
 <?php
 
+use JetBrains\PhpStorm\NoReturn;
+
 function print_pre($var, $exit = false): void
 {
     echo '<pre>' . print_r($var, 1) . '</pre>';
@@ -67,10 +69,16 @@ function get_validation_class($field_name, $errors = []): string
     return isset($errors[$field_name]) ? 'is-invalid' : 'is-valid';
 }
 
-function abort(string $error = '', int $code = 404)
+#[NoReturn] function abort(string $error = '', int $code = 404): void
 {
     response()->setResponseCode($code);
-    echo view("errors" . DS . $code, ['error' => $error], false);
-//    echo view("errors/{$code}", ['error' => $error], false);
+    if (DEBUG || $code === 404) {
+        echo view("errors" . DS . $code, ['error' => $error], false);
+    }
     die;
+}
+
+function db(): \core\Database
+{
+    return app()->db;
 }

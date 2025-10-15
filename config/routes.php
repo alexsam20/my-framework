@@ -2,9 +2,7 @@
 
 /** @var \core\Application $app */
 
-$app->router->get('/', function () {
-    return view('main', ['title' => 'Home Page'], 'default');
-});
+$app->router->get('/', [\app\Controllers\HomeController::class,'index']);
 
 $app->router->get('/about', function () {
     return view('about');
