@@ -9,5 +9,8 @@ $app->router->get('/about', function () {
 });
 
 $app->router->get('/contact', [\app\Controllers\ContactController::class, 'index']);
-
 $app->router->post('/contact', [\app\Controllers\ContactController::class, 'send']);
+
+$app->router->get('/posts/create', [\app\Controllers\PostController::class, 'create']);
+$app->router->post('/posts/store', [\app\Controllers\PostController::class, 'store']);
+

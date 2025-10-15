@@ -4,6 +4,7 @@ namespace core;
 
 abstract class Model
 {
+    protected string $table = '';
     public array $fillable = [];
     public array $attributes = [];
     public array $rules = [];

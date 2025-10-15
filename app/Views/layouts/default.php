@@ -22,6 +22,9 @@
                     <a class="nav-link" href="<?= base_url('/') ?>">Home</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="<?= base_url('/posts/create') ?>">Create Posts</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="<?= base_url('/contact') ?>">Contact</a>
                 </li>
                 <li class="nav-item">
