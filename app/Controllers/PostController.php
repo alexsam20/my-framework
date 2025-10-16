@@ -6,7 +6,7 @@ use app\Models\Post;
 
 class PostController extends BaseController
 {
-    public function edit()
+    public function edit(): false|string|\core\View
     {
         $id = request()->get('id');
         $post = db()->findOrFail('posts', 'id', $id);
@@ -14,7 +14,7 @@ class PostController extends BaseController
         return view('/posts/edit', ['title' => 'Create post', 'post'=> $post]);
     }
 
-    public function update()
+    public function update(): void
     {
         $id = request()->post('id');
         if (!$id) {
@@ -28,7 +28,13 @@ class PostController extends BaseController
             session()->setFlash('error', $model->listErrors());
             response()->redirect('/posts/edit?id=' . $id);
         }
-        var_dump($model->attributes);
+        if (false !== db()->update('posts', $model->attributes, 'id')) {
+            session()->setFlash('success', "Post {$id} saved");
+            response()->redirect('/posts/edit?id=' . $id);
+        }
+
+        session()->setFlash('error', 'Error updating');
+        response()->redirect('/');
     }
 
     public function create(): false|string|\core\View

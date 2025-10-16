@@ -99,6 +99,35 @@ class Database
         return false;
     }
 
+    public function update(string $table, array $attributes = [], $column = 'id')
+    {
+
+        if (!empty($attributes)) {
+            $keys = array_keys($attributes);
+            $query = "UPDATE $table SET ";
+
+            foreach ($keys as $key) {
+                if ($key === $column) {
+                    continue;
+                }
+                $query .= $key . " = :" . $key . ", ";
+            }
+
+            $query = trim($query, ", ");
+            $query .= " WHERE $column = :$column";
+            $this->query($query);
+            foreach ($attributes as $attribute => $value) {
+                $this->bind(":$attribute", $value);
+            }
+            if ($this->execute()) {
+                return $this->rowCount();
+            }
+
+            return false;
+        }
+        return false;
+    }
+
     // Bind values
     public function bind(string $param, mixed $value, $type = null): void
     {
