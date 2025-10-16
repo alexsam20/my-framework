@@ -13,6 +13,7 @@ const HELPERS = ROOT . 'helpers';
 const CONFIG = ROOT . 'config';
 const VIEWS = APP . DS . 'Views';
 const LAYOUT = 'default';
+const ERROR_LOG_PATH = ROOT . 'tmp/logs/error.log';
 const DB = [
     'host' => 'localhost',
     'dbname' => 'my_framework',

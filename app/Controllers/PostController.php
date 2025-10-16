@@ -19,6 +19,8 @@ class PostController extends BaseController
             if (!$model->validate()) {
                 return view('posts/create', ['title' => 'Create post', 'errors' => $model->getErrors()]);
             }
+
+            $this->db->insert('posts', $model->attributes);
         }
 
         return 'OK';

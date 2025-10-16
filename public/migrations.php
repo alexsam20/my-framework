@@ -73,7 +73,7 @@ function logging($message): void
 {
     echo '<strong>[' . date('Y-m-d H:i:s') . ']</strong> - ' . $message . '<br />';
 }
-
+/** TODO Пересмотреть подключение соединения с базой даных */
 //function execDump($path_dump, $pdo)
 //{
 //    $data = file_get_contents(DOCUMENT_ROOT . $path_dump);

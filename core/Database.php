@@ -24,6 +24,7 @@ class Database
         try {
             $this->dbh = new PDO($dsn, DB['username'], DB['password'], DB['options']);
         } catch (PDOException $e) {
+            error_log("[" . date("Y-m-d H:i:s") . "] DB Error: {$e->getMessage()}" . PHP_EOL, 3, ERROR_LOG_PATH);
             abort($e->getMessage(), 500);
         }
     }
@@ -39,6 +40,27 @@ class Database
     {
         $this->query("SELECT * FROM $table");
         return $this->resultSet();
+    }
+
+    /** TODO Надо разобраться и доделать */
+    /* $query .= " where $id = :$id"; */
+    public function where($table, $data, $data_not = [])
+    {
+        $keys = array_keys($data);
+        $keys_not = array_keys($data_not);
+        $query = "SELECT * FROM $table WHERE ";
+        foreach ($keys as $key) {
+            $query .= $key . " = :" . $key . " && ";
+        }
+        foreach ($keys_not as $key) {
+            $query .= $key . " != :" . $key . " && ";
+        }
+        $query = trim($query, " && ");
+        $query .= " ORDER BY created_at ASC LIMIT 10 OFFSET 0";
+        $data = array_merge($data, $data_not);
+
+        $this->query($query);
+        $this->stmt->execute($data);
     }
 
     // Get one records
@@ -57,6 +79,24 @@ class Database
         if ($result === false) { abort(); }
 
         return $result;
+    }
+
+    public function insert(string $table, array $attributes = []): false|string
+    {
+        if (!empty($attributes)) {
+            $keys = array_keys($attributes);
+            $this->query("INSERT INTO $table (" . implode(',', $keys) . ") 
+                   VALUES (" . implode(',', array_map(static fn($attr) => ":$attr", $keys)) . ")");
+            foreach ($attributes as $attribute => $value) {
+                $this->bind(":$attribute", $value);
+            }
+            if ($this->execute()) {
+                var_dump($this->lastId());
+                return $this->lastId();
+            }
+        }
+
+        return false;
     }
 
     // Bind values
@@ -95,7 +135,7 @@ class Database
     }
 
     // Get single record as object
-    public function single()
+    public function single(): mixed
     {
         $this->execute();
 
