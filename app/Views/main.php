@@ -2,7 +2,7 @@
     <h1>Main page</h1>
     <?php if (!empty($posts)): ?>
     <?php foreach ($posts as $post): ?>
-        <?php echo '<h4>' . $post['title'] . '</h4>'; ?>
+        <h3><a href="<?= base_url('/posts/edit?id='.$post['id'])?>"><?php echo $post['title']; ?></a></h3>
         <?php echo '<p>' . $post['content'] . '<p>'?>
         <?php echo '<p>' . $post['created_at'] . '<p><hr />'?>
     <?php endforeach; ?>

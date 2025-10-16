@@ -13,4 +13,6 @@ $app->router->post('/contact', [\app\Controllers\ContactController::class, 'send
 
 $app->router->get('/posts/create', [\app\Controllers\PostController::class, 'create']);
 $app->router->post('/posts/store', [\app\Controllers\PostController::class, 'store']);
+$app->router->get('/posts/edit', [\app\Controllers\PostController::class, 'edit']);
+$app->router->post('/posts/update', [\app\Controllers\PostController::class, 'update']);
 
