@@ -82,3 +82,18 @@ function db(): \core\Database
 {
     return app()->db;
 }
+
+function session(): \core\Session
+{
+    return app()->session;
+}
+
+function get_alerts()
+{
+    if ($flash_success = session()->getFlash('success')) {
+        view()->renderPartial('inc/alert_success', compact('flash_success'));
+    }
+    if ($flash_error = session()->getFlash('error')) {
+        view()->renderPartial('inc/alert_error', compact('flash_error'));
+    }
+}

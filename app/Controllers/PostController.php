@@ -6,9 +6,9 @@ use app\Models\Post;
 
 class PostController extends BaseController
 {
-    public function create()
+    public function create(): false|string|\core\View
     {
-        return view('posts/create', ['title' => 'Create post']);
+        return view('/posts/create', ['title' => 'Create post']);
     }
 
     public function store()
@@ -17,10 +17,15 @@ class PostController extends BaseController
             $model = new Post();
             $model->loadData();
             if (!$model->validate()) {
-                return view('posts/create', ['title' => 'Create post', 'errors' => $model->getErrors()]);
+                return view('/posts/create', ['title' => 'Create post', 'errors' => $model->getErrors()]);
             }
 
-            $this->db->insert('posts', $model->attributes);
+            if ($id = $this->db->insert('posts', $model->attributes)) {
+                session()->setFlash('success', "Post $id created");
+            } else {
+                session()->setFlash('error', 'Unknown errors');
+            }
+            response()->redirect('/posts/create');
         }
 
         return 'OK';

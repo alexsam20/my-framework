@@ -34,6 +34,7 @@
         </div>
     </div>
 </nav>
+<?php get_alerts() ?>
 <?= $this->content ?>
 <script src="<?= URL_ROOT . DS ?>assets/bootstrap/js/bootstrap.min.js"></script>
 </body>

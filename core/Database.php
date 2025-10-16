@@ -44,7 +44,7 @@ class Database
 
     /** TODO Надо разобраться и доделать */
     /* $query .= " where $id = :$id"; */
-    public function where($table, $data, $data_not = [])
+    public function where($table, $data, $data_not = []): void
     {
         $keys = array_keys($data);
         $keys_not = array_keys($data_not);

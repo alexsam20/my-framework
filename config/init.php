@@ -1,5 +1,11 @@
 <?php
 const DS = DIRECTORY_SEPARATOR;
+/*
+    $protocol = explode('/', $_SERVER['SERVER_PROTOCOL']);
+    $protocol = strtolower($protocol[0]);
+    $host = $protocol . "://" . $_SERVER['HTTP_HOST'];
+*/
+
 // ROOT - /media/alex/DataFiles/www/my-framework/
 define('ROOT', dirname(__DIR__) . DS);
 define('PROTOCOL', strtolower(trim(strstr($_SERVER['SERVER_PROTOCOL'], '/', true))));
