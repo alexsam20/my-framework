@@ -18,7 +18,7 @@ class PostController extends BaseController
     {
         $id = request()->post('id');
         if (!$id) {
-            session()->setFlash('error', 'Not found ID');
+            session()->setFlash('error', 'Not found Post');
             response()->redirect('/');
         }
         $model = new Post();
@@ -59,6 +59,25 @@ class PostController extends BaseController
             response()->redirect('/posts/create');
         }
 
-        return 'OK';
+        response()->redirect('/posts/create');
+        return true;
+    }
+
+    public function delete(): bool
+    {
+        (int)$id = request()->get('id');
+        if (!$id) {
+            session()->setFlash('error', 'Not found ID');
+            response()->redirect('/');
+        }
+        if (db()->delete('posts', $id)) {
+            session()->setFlash('success', "Post $id soft deleted");
+            response()->redirect('/', );
+            return true;
+        }
+
+        session()->setFlash('error', 'Post not deleted');
+        response()->redirect('/', );
+        return false;
     }
 }

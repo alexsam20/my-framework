@@ -38,7 +38,7 @@ class Database
     // Get all records
     public function findAll(string $table): false|array
     {
-        $this->query("SELECT * FROM $table");
+        $this->query("SELECT * FROM $table WHERE is_deleted IS NULL");
         return $this->resultSet();
     }
 
@@ -66,7 +66,7 @@ class Database
     // Get one records
     public function findOne(string $table, string $field, mixed $value): false|array
     {
-        $this->query("SELECT * FROM $table WHERE $field = :value LIMIT 1");
+        $this->query("SELECT * FROM $table WHERE $field = :value AND `is_deleted` IS NULL LIMIT 1");
         $this->bind(':value', $value);
 
         return $this->single();
@@ -99,7 +99,7 @@ class Database
         return false;
     }
 
-    public function update(string $table, array $attributes = [], $column = 'id')
+    public function update(string $table, array $attributes = [], string $column = 'id')
     {
 
         if (!empty($attributes)) {
@@ -126,6 +126,14 @@ class Database
             return false;
         }
         return false;
+    }
+
+    // Soft delete
+    public function delete(string $table, int $id): false|int
+    {
+        $attributes = ['id' => $id, 'is_deleted' => date("Y-m-d H:i:s")];
+        return $this->update($table, $attributes);
+
     }
 
     // Bind values
