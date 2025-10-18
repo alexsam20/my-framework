@@ -18,6 +18,8 @@ class Database
      */
     private PDOStatement $stmt;
 
+    protected array $queries = [];
+
     public function __construct()
     {
         $dsn = "mysql:host=" . DB['host'] . ";dbname=" . DB['dbname'] . ";charset=" . DB['charset'];
@@ -32,6 +34,7 @@ class Database
     // Prepare statement with query
     public function query($sql): void
     {
+        $this->queries[] = $sql;
         $this->stmt = $this->dbh->prepare($sql);
     }
 
@@ -152,9 +155,15 @@ class Database
     }
 
     // Execute the prepared statement
-    public function execute(): bool
+    public function execute(): PDOStatement
     {
-        return $this->stmt->execute();
+        $this->stmt->execute();
+        if (DEBUG) {
+            ob_start();
+            $this->stmt->debugDumpParams();
+            $this->queries[] = ob_get_clean();
+        }
+        return $this->stmt;
     }
 
     // Get result set as array of objects
@@ -183,5 +192,20 @@ class Database
     public function rowCount(): int
     {
         return $this->stmt->rowCount();
+    }
+
+    public function getQueries(): array
+    {
+        $result = [];
+        foreach ($this->queries as $key => $query) {
+            $line = strtok($query, PHP_EOL);
+            while (false !== $line) {
+                if (str_contains($line, 'SQL:') || str_contains($line, 'Sent SQL:')) {
+                    $result[$key][] = $line;
+                }
+                $line = strtok(PHP_EOL);
+            }
+        }
+        return $result;
     }
 }

@@ -88,12 +88,11 @@ function session(): \core\Session
     return app()->session;
 }
 
-function get_alerts()
+function get_alerts(): void
 {
-    if ($flash_success = session()->getFlash('success')) {
-        view()->renderPartial('inc/alert_success', compact('flash_success'));
-    }
-    if ($flash_error = session()->getFlash('error')) {
-        view()->renderPartial('inc/alert_error', compact('flash_error'));
+    if (!empty($_SESSION['flash_message'])) {
+        foreach ($_SESSION['flash_message'] as $key => $value)  {
+            view()->renderPartial("inc/alert_{$key}", ["flash_{$key}" => session()->getFlash($key)]);
+        }
     }
 }

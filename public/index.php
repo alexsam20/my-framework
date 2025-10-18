@@ -16,3 +16,9 @@ require_once CONFIG . DS . 'routes.php';
 
 $app->run();
 
+if (DEBUG) {
+    echo '<div style="margin: 15px; padding: 10px; color: #0f5132; text-align: center;">';
+    printf('Source running: %.4F sek', (microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']));
+    echo '</div>';
+}
+
