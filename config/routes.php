@@ -17,3 +17,4 @@ $app->router->get('/posts/edit', [\app\Controllers\PostController::class, 'edit'
 $app->router->post('/posts/update', [\app\Controllers\PostController::class, 'update']);
 $app->router->get('/posts/delete', [\app\Controllers\PostController::class, 'delete']);
 
+$app->router->get('/posts/(?P<slug>[a-z0-9-]+)', [\app\Controllers\PostController::class, 'show']);

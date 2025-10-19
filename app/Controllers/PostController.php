@@ -6,6 +6,17 @@ use app\Models\Post;
 
 class PostController extends BaseController
 {
+    public function show()
+    {
+        $slug = router()->routeParams['slug'] ?? '';
+        $post = db()->selectWhere('posts', ['slug'=> $slug]);
+        if (!$post) {
+            abort();
+        }
+
+        return view('posts/show', ['title' => $post['title'], 'post'=> $post]);
+    }
+
     public function edit(): false|string|\core\View
     {
         $id = request()->get('id');

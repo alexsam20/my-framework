@@ -3,7 +3,7 @@
     <?php if (!empty($posts)): ?>
     <?php foreach ($posts as $post): ?>
         <h5>
-            <a href="#"><?php echo $post['title']; ?></a>&nbsp;|&nbsp;
+            <a href="posts/<?= $post['slug'] ?>"><?php echo $post['title']; ?></a>&nbsp;|&nbsp;
             <a href="<?= base_url('/posts/edit?id='.$post['id'])?>">Edit</a>&nbsp;|&nbsp;
             <a href="<?= base_url('/posts/delete?id='.$post['id'])?>">Delete</a>
         </h5>

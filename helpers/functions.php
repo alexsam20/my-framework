@@ -88,6 +88,11 @@ function session(): \core\Session
     return app()->session;
 }
 
+function router(): \core\Router
+{
+    return app()->router;
+}
+
 function get_alerts(): void
 {
     if (!empty($_SESSION['flash_message'])) {

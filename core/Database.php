@@ -45,9 +45,7 @@ class Database
         return $this->resultSet();
     }
 
-    /** TODO Надо разобраться и доделать */
-    /* $query .= " where $id = :$id"; */
-    public function where($table, $data, $data_not = []): void
+    public function selectWhere($table, $data, $data_not = []): mixed
     {
         $keys = array_keys($data);
         $keys_not = array_keys($data_not);
@@ -59,14 +57,19 @@ class Database
             $query .= $key . " != :" . $key . " && ";
         }
         $query = trim($query, " && ");
-        $query .= " ORDER BY created_at ASC LIMIT 10 OFFSET 0";
+        /*$query .= " ORDER BY created_at ASC LIMIT 10 OFFSET 0";*/
+        $query .= " AND is_deleted IS NULL LIMIT 1";
         $data = array_merge($data, $data_not);
-
         $this->query($query);
+        foreach ($data as $attribute => $value) {
+            $this->bind(":$attribute", $value);
+        }
         $this->stmt->execute($data);
+
+        return $this->single();
     }
 
-    // Get one records
+    // Get one recordsSlug
     public function findOne(string $table, string $field, mixed $value): false|array
     {
         $this->query("SELECT * FROM $table WHERE $field = :value AND `is_deleted` IS NULL LIMIT 1");
@@ -102,7 +105,7 @@ class Database
         return false;
     }
 
-    public function update(string $table, array $attributes = [], string $column = 'id')
+    public function update(string $table, array $attributes = [], string $column = 'id'): false|int
     {
 
         if (!empty($attributes)) {

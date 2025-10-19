@@ -5,6 +5,7 @@ namespace core;
 class Router
 {
     protected array $routes = [];
+    public array $routeParams = [];
 
     public function __construct(public Request $request, public Response $response)
     {}
@@ -29,7 +30,8 @@ class Router
     {
         $path = $this->request->getPath();
         $method = $this->request->getMethod();
-        $callback = $this->routes[$method]["/$path"] ?? false;
+        $callback = $this->matchRoute($method, $path);
+//        $callback = $this->routes[$method]["/$path"] ?? false;
 
         if (false === $callback) {
             abort();
@@ -40,5 +42,22 @@ class Router
         }
 
         return call_user_func($callback);
+    }
+
+    private function matchRoute($method, $path)
+    {
+        foreach ($this->routes[$method] as $pattern => $route) {
+            if (preg_match("#^{$pattern}$#", "/{$path}", $matches)) {
+                foreach ($matches as $k => $v) {
+                    if (is_string($k)) {
+                        $this->routeParams[$k] = $v;
+                    }
+                }
+
+                return $route;
+            }
+        }
+
+        return false;
     }
 }

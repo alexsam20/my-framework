@@ -36,7 +36,7 @@
 </nav>
 <?php get_alerts() ?>
 <?= $this->content ?>
-<?php var_dump(db()->getQueries()); ?>
+<?php if (DEBUG) {var_dump(db()->getQueries());} ?>
 <script src="<?= URL_ROOT . DS ?>assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
