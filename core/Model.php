@@ -10,12 +10,13 @@ abstract class Model
     public array $rules = [];
     public array $labels = [];
     protected array $errors = [];
-    protected array $rules_list = ['required', 'min', 'max', 'email'];
+    protected array $rules_list = ['required', 'min', 'max', 'email', 'unique'];
     protected array $messages = [
         'required' => ':field_name: field is required',
         'min' => ':field_name: field must be a minimum :rule_value: characters',
         'max' => ':field_name: field must be a maximum :rule_value: characters',
         'email' => 'Not valid :field_name:',
+        'unique' => ':field_name: is already taken',
     ];
 
     public function loadData(): void
@@ -119,5 +120,13 @@ abstract class Model
     protected function email($value, $rule_value): bool
     {
         return filter_var($value, FILTER_VALIDATE_EMAIL);
+    }
+
+    protected function unique($value, $rule_value): bool
+    {
+        $data = explode(':', $rule_value);
+        $attributes = [$data[1] => $value];
+
+        return !db()->selectWhere($data[0], $attributes);
     }
 }

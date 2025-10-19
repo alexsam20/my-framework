@@ -12,6 +12,13 @@
                     <?= get_errors('title', $errors ?? []) ?>
                 </div>
                 <div class="mb-3">
+                    <label for="slug" class="form-label">Slug</label>
+                    <input type="text" name="slug"
+                           class="form-control <?= get_validation_class('slug', $errors ?? []) ?>" id="slug"
+                           placeholder="Slug" value="<?= old('slug') ?>">
+                    <?= get_errors('slug', $errors ?? []) ?>
+                </div>
+                <div class="mb-3">
                     <label for="content" class="form-label">Content</label>
                     <textarea name="content" class="form-control <?= get_validation_class('content', $errors ?? []) ?>"
                               id="content" rows="3"><?= old('content') ?></textarea>
