@@ -10,13 +10,14 @@ abstract class Model
     public array $rules = [];
     public array $labels = [];
     protected array $errors = [];
-    protected array $rules_list = ['required', 'min', 'max', 'email', 'unique', 'extension', 'size'];
+    protected array $rules_list = ['required', 'min', 'max', 'email', 'unique', 'file', 'extension', 'size'];
     protected array $messages = [
         'required' => ':field_name: field is required',
         'min' => ':field_name: field must be a minimum :rule_value: characters',
         'max' => ':field_name: field must be a maximum :rule_value: characters',
         'email' => 'Not valid :field_name:',
         'unique' => ':field_name: is already taken',
+        'file' => ':field_name: field is required',
         'extension' => 'File :field_name: extension does not match. Allowed :rule_value:',
         'size' => 'File :field_name: is to large. Allowed :rule_value: bytes',
     ];
@@ -106,16 +107,14 @@ abstract class Model
 
     protected function required($value, $rule_value): bool
     {
-        if (is_string($value)) {
+        /*if (is_string($value)) {
             $value = trim($value);
         }
-        if (is_array($value)) {
-            if (empty($value['name'])) {
-                return false;
-            }
-        }
+        if (is_array($value) && empty($value['name'])) {
+            return false;
+        }*/
 
-        return !empty($value);
+        return !empty(trim($value));
     }
 
     protected function min($value, $rule_value): bool
@@ -141,7 +140,12 @@ abstract class Model
         return !db()->selectWhere($data[0], $attributes);
     }
 
-    public function extension($value, $rule_value): bool
+    private function file($value, $rule_value): bool
+    {
+        return !(isset($value['error']) && $value['error'] !== 0);
+    }
+
+    protected function extension($value, $rule_value): bool
     {
         if (empty($value['name'])) {
             return true;
@@ -151,7 +155,7 @@ abstract class Model
         return in_array($fileExtension, explode('|', $rule_value), true);
     }
 
-    public function size($value, $rule_value): bool
+    protected function size($value, $rule_value): bool
     {
         if (empty($value['size'])) {
             return true;

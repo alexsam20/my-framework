@@ -53,7 +53,7 @@ class PostController extends BaseController
         return view('/posts/create', ['title' => 'Create post']);
     }
 
-    public function store()
+    public function store(): bool|string|\core\View
     {
         if (request()->isPost()) {
             $model = new Post();
@@ -64,13 +64,13 @@ class PostController extends BaseController
             } else {
                 $model->attributes['thumbnail'] = [];
             }
+            print_pre($model->attributes);
             if (!$model->validate()) {
+                print_pre($model->getErrors());
                 return view('/posts/create', ['title' => 'Create post', 'errors' => $model->getErrors()]);
             }
-
-
-            /*if ($id = $this->db->insert('posts', $model->attributes)) {*/
-            if ($model->savePost()) {
+            die;
+            if ($id = $model->savePost()) {
                 session()->setFlash('success', "Post $id created");
             } else {
                 session()->setFlash('error', 'Unknown errors');
