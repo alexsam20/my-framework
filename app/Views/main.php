@@ -8,6 +8,7 @@
             <a href="<?= base_url('/posts/delete?id='.$post['id'])?>">Delete</a>
         </h5>
         <?php echo '<p>' . $post['content'] . '<p>'?>
+        <?php echo '<p><img width="150px" src="' . $post['thumbnail'] .'"><p>'?>
         <?php echo '<p>' . $post['created_at'] . '<p><hr />'?>
     <?php endforeach; ?>
     <?php endif; ?>

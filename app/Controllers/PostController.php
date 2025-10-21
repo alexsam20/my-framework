@@ -58,11 +58,19 @@ class PostController extends BaseController
         if (request()->isPost()) {
             $model = new Post();
             $model->loadData();
+
+            if (isset($_FILES['thumbnail'])) {
+                $model->attributes['thumbnail'] = $_FILES['thumbnail'];
+            } else {
+                $model->attributes['thumbnail'] = [];
+            }
             if (!$model->validate()) {
                 return view('/posts/create', ['title' => 'Create post', 'errors' => $model->getErrors()]);
             }
 
-            if ($id = $this->db->insert('posts', $model->attributes)) {
+
+            /*if ($id = $this->db->insert('posts', $model->attributes)) {*/
+            if ($model->savePost()) {
                 session()->setFlash('success', "Post $id created");
             } else {
                 session()->setFlash('error', 'Unknown errors');

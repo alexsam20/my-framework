@@ -13,6 +13,7 @@ define('PROTOCOL', strtolower(trim(strstr($_SERVER['SERVER_PROTOCOL'], '/', true
 define('URL_ROOT', PROTOCOL . '://' . $_SERVER['HTTP_HOST']);
 const DEBUG = 1;
 const WWW = ROOT . 'public';
+const UPLOADS = WWW . DS . 'uploads';
 const APP = ROOT . 'app';
 const CORE = ROOT . 'core';
 const HELPERS = ROOT . 'helpers';

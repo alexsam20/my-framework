@@ -101,3 +101,31 @@ function get_alerts(): void
         }
     }
 }
+
+function get_file_extension($file): string
+{
+    $extension = explode(".", $file);
+    return end($extension);
+}
+
+function upload_file($file): false|string
+{
+    $fileExtension = get_file_extension($file['name']);
+    $directory = DS . date('Y') . DS . date('m') . DS . date('d'); // 2025/10/21
+
+    if (!is_dir(UPLOADS . $directory)) {
+        mkdir(UPLOADS . $directory, 0755, true);
+    }
+
+    $fileName = md5($file['name'] . time());
+    $filePath = UPLOADS . $directory . DS . $fileName . "." . $fileExtension;
+    $fileUrl = base_url( DS ."uploads" . $directory . DS . $fileName . "." . $fileExtension);
+
+    if (move_uploaded_file($file['tmp_name'], $filePath)) {
+        return $fileUrl;
+    }
+
+    error_log("[" . date("Y-m-d H:i:s") . "] Error uploading file" . PHP_EOL, 3, ERROR_LOG_PATH);
+
+    return false;
+}
