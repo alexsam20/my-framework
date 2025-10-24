@@ -64,12 +64,19 @@ class PostController extends BaseController
             } else {
                 $model->attributes['thumbnail'] = [];
             }
+
+            if (isset($_FILES['thumbnails'])) {
+                $model->attributes['thumbnails'] = $_FILES['thumbnails'];
+            } else {
+                $model->attributes['thumbnails'] = [];
+            }
+
             print_pre($model->attributes);
             if (!$model->validate()) {
-                print_pre($model->getErrors());
+                print_pre($model->getErrors()); die;
                 return view('/posts/create', ['title' => 'Create post', 'errors' => $model->getErrors()]);
             }
-            die;
+
             if ($id = $model->savePost()) {
                 session()->setFlash('success', "Post $id created");
             } else {

@@ -25,6 +25,12 @@
                     <?= get_errors('thumbnail', $errors ?? []) ?>
                 </div>
                 <div class="mb-3">
+                    <label for="thumbnails" class="form-label">Thumbnails</label>
+                    <input type="file" name="thumbnails[]" multiple
+                           class="form-control <?= get_validation_class('thumbnails', $errors ?? []) ?>" id="thumbnails">
+                    <?= get_errors('thumbnails', $errors ?? []) ?>
+                </div>
+                <div class="mb-3">
                     <label for="content" class="form-label">Content</label>
                     <textarea name="content" class="form-control <?= get_validation_class('content', $errors ?? []) ?>"
                               id="content" rows="3"><?= old('content') ?></textarea>

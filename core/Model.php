@@ -142,11 +142,38 @@ abstract class Model
 
     private function file($value, $rule_value): bool
     {
-        return !(isset($value['error']) && $value['error'] !== 0);
+        if (isset($value['error']) && is_array($value['error'])) {
+            foreach ($value['error'] as $error) {
+                if ($error !== 0) {
+                    return false;
+                }
+            }
+        } elseif (isset($value['error']) && $value['error'] !== 0) {
+            return false;
+        }
+        return true;
+//        return !(isset($value['error']) && $value['error'] !== 0);
     }
 
     protected function extension($value, $rule_value): bool
     {
+        // Files Array
+        if (is_array($value['name'])) {
+            if (empty($value['name'][0])) {
+                return true;
+            }
+
+            foreach ($value['name'] as $iValue) {
+                $fileExtension = get_file_extension($iValue);
+                if (!in_array($fileExtension, explode('|', $rule_value), true)) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // File Single
         if (empty($value['name'])) {
             return true;
         }
@@ -157,6 +184,19 @@ abstract class Model
 
     protected function size($value, $rule_value): bool
     {
+        if (is_array($value['size'])) {
+            if (empty($value['size'][0])) {
+                return true;
+            }
+
+            foreach ($value['size'] as $iValue) {
+                if ($iValue > $rule_value) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
         if (empty($value['size'])) {
             return true;
         }

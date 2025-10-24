@@ -14,7 +14,8 @@ class Post extends Model
         'title' => ['required' => true],
         'content' => ['min' => 10],
         'slug' => ['required' => true, 'unique' => 'posts:slug'],
-        'thumbnail' => ['file' => true, 'extension' => 'jpg|jpeg|png', 'size' => 1_048_576],
+        'thumbnail' => [/*'file' => true,*/ 'extension' => 'jpg|jpeg|png', 'size' => 1_048_576],
+        'thumbnails' => ['extension' => 'jpg|jpeg|png', 'size' => 1_048_576],
     ];
 
     public array $labels = [
@@ -22,6 +23,7 @@ class Post extends Model
         'content' => 'Post Content',
         'slug' => 'Slug',
         'thumbnail' => 'Thumbnail',
+        'thumbnails' => 'Thumbnails',
     ];
 
     public function savePost(): false|string
