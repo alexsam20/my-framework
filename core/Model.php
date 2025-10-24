@@ -34,14 +34,20 @@ abstract class Model
         }
     }
 
-    public function validate(): bool
+    public function validate($data = [], $rules = []): bool
     {
-        foreach ($this->attributes as $fields => $value) {
-            if (isset($this->rules[$fields])) {
+        if (empty($data)) {
+            $data = $this->attributes;
+        }
+        if (empty($rules)) {
+            $rules = $this->rules;
+        }
+        foreach ($data as $fields => $value) {
+            if (isset($rules[$fields])) {
                 $this->check([
                     'field_name' => $fields,
                     'value' => $value,
-                    'rules' => $this->rules[$fields],
+                    'rules' => $rules[$fields],
                 ]);
             }
         }

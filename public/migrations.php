@@ -32,8 +32,7 @@ function applyMigrations($pdo): void
         require_once APP . '/migrations/' . $migration;
         $className = pathinfo($migration, PATHINFO_FILENAME);
         $instance = new $className();
-        logging("App
-        lying migration $migration");
+        logging("Applying migration $migration");
         $instance->up();
         logging("Applied migration $migration");
         $newMigrations[] = $migration;

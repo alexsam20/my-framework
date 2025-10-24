@@ -108,20 +108,20 @@ function get_file_extension($file): string
     return end($extension);
 }
 
-function upload_file($file): false|string
+function upload_file($file, $i = false): false|string
 {
-    $fileExtension = get_file_extension($file['name']);
+    $fileExtension = (false === $i) ? get_file_extension($file['name']) : get_file_extension($file['name'][$i]);
     $directory = DS . date('Y') . DS . date('m') . DS . date('d'); // 2025/10/21
 
     if (!is_dir(UPLOADS . $directory)) {
         mkdir(UPLOADS . $directory, 0755, true);
     }
 
-    $fileName = md5($file['name'] . time());
+    $fileName = md5(((false === $i) ? $file['name'] : $file['name'][$i]) . time() );
     $filePath = UPLOADS . $directory . DS . $fileName . "." . $fileExtension;
     $fileUrl = base_url( DS ."uploads" . $directory . DS . $fileName . "." . $fileExtension);
 
-    if (move_uploaded_file($file['tmp_name'], $filePath)) {
+    if (move_uploaded_file((false === $i) ? $file['tmp_name'] : $file['tmp_name'][$i], $filePath)) {
         return $fileUrl;
     }
 

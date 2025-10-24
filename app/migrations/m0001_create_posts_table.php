@@ -1,7 +1,5 @@
 <?php
 
-//namespace app\migrations;
-
 use core\Database;
 
 class m0001_create_posts_table

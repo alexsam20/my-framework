@@ -50,6 +50,20 @@ class PostController extends BaseController
 
     public function create(): false|string|\core\View
     {
+        $model = new Post();
+        var_dump($model->validate(
+            $data = [
+                'name' => 'aaaa',
+                'email' => '1@1',
+                'text' => '1234567890',
+            ],
+            $rule = [
+                'name' => ['required' => true],
+                'email' => ['email' => true],
+                'text' => ['min' => 10],
+            ]
+        ));
+        var_dump($model->getErrors());
         return view('/posts/create', ['title' => 'Create post']);
     }
 
@@ -71,9 +85,9 @@ class PostController extends BaseController
                 $model->attributes['thumbnails'] = [];
             }
 
-            print_pre($model->attributes);
+//            print_pre($model->attributes);
             if (!$model->validate()) {
-                print_pre($model->getErrors()); die;
+//                print_pre($model->getErrors()); die;
                 return view('/posts/create', ['title' => 'Create post', 'errors' => $model->getErrors()]);
             }
 
